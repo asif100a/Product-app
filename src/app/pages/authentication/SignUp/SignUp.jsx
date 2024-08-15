@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import useAuthProvider from "../../../components/hooks/useAuthProvider";
+import axios from "axios";
 
 const SignUp = () => {
+    const {signUpUser} = useAuthProvider();
+
     // Hook form elements
     const {
         register,
@@ -10,9 +14,31 @@ const SignUp = () => {
     } = useForm();
 
     //   
-    const onSubmit = (data) => {
+    const onSubmit = async(data) => {
         console.log(data);
-        
+
+        // Save the uploaded photo in the imgBB
+        const uploadedPhoto = data.photo[0];
+        console.log(uploadedPhoto);
+        // form the uploaded image
+        const formedImage = new FormData();
+        formedImage.append('image', uploadedPhoto);
+        // Send to the imgBB
+        const {data: imgData} = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_PHOTO_UPLOAD_KEY}`, formedImage, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log(imgData);
+
+        // Sign up the user
+        signUpUser(data.email, data.password)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error);
+            })
     };
 
     return (
@@ -54,6 +80,21 @@ const SignUp = () => {
                                                     htmlFor="name"
                                                     className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
                                                 >Name
+                                                </label>
+                                            </div>
+                                            {/*Photo input */}
+                                            <div className="relative mb-4" data-twe-input-wrapper-init>
+                                                <input
+                                                    type="file"
+                                                    name="photo"
+                                                    className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                                                    id="exampleFormControlInput1"
+                                                    {...register("photo", { required: true })}
+                                                />
+                                                <label
+                                                    htmlFor="photo"
+                                                    className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
+                                                >Photo
                                                 </label>
                                             </div>
                                             {/*Email input */}
