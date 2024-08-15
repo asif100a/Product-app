@@ -5,7 +5,10 @@ const Home = () => {
     return (
         <div>
             <Navber />
-            3213
+            {/* Main Content */}
+            <div>
+                
+            </div>
             <Footer />
         </div>
     );
