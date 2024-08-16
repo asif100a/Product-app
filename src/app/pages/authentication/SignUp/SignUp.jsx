@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import useAuthProvider from "../../../components/hooks/useAuthProvider";
 import axios from "axios";
+import { updateProfile } from "firebase/auth";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUp = () => {
     const {signUpUser} = useAuthProvider();
+    const navigate = useNavigate();
 
     // Hook form elements
     const {
@@ -18,23 +21,37 @@ const SignUp = () => {
         console.log(data);
 
         // Save the uploaded photo in the imgBB
-        const uploadedPhoto = data.photo[0];
-        console.log(uploadedPhoto);
+        const takenPhoto = data.photo[0];
+        console.log(takenPhoto);
         // form the uploaded image
         const formedImage = new FormData();
-        formedImage.append('image', uploadedPhoto);
+        formedImage.append('image', takenPhoto);
         // Send to the imgBB
         const {data: imgData} = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_PHOTO_UPLOAD_KEY}`, formedImage, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        console.log(imgData);
+        const uploadedPhoto = imgData.data.url;
+        console.log(uploadedPhoto);
 
         // Sign up the user
         signUpUser(data.email, data.password)
             .then(res => {
-                console.log(res);
+                // console.log(res)
+                updateProfile(res.user, {
+                    displayName: data.name,
+                    photoURL: uploadedPhoto
+                })
+                    .then(() => {
+                        console.log('Successfully Signed up');
+                        toast.success('Sign up successful');
+                        navigate('/');
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toast.error(error.message);
+                    })
             })
             .catch(error => {
                 console.error(error);
@@ -76,6 +93,7 @@ const SignUp = () => {
                                                     placeholder="Type your name"
                                                     {...register("name", { required: true })}
                                                 />
+                                                {errors.name && <span className="text-orange-600">Please fill out this field</span>}
                                                 <label
                                                     htmlFor="name"
                                                     className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
@@ -91,6 +109,7 @@ const SignUp = () => {
                                                     id="exampleFormControlInput1"
                                                     {...register("photo", { required: true })}
                                                 />
+                                                {errors.phoro && <span className="text-orange-600">Please fill out this field</span>}
                                                 <label
                                                     htmlFor="photo"
                                                     className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
@@ -107,6 +126,7 @@ const SignUp = () => {
                                                     placeholder="Type your email"
                                                     {...register("email", { required: true })}
                                                 />
+                                                {errors.email && <span className="text-orange-600">Please fill out this field</span>}
                                                 <label
                                                     htmlFor="email"
                                                     className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
@@ -124,6 +144,7 @@ const SignUp = () => {
                                                     placeholder="Password"
                                                     {...register('password', { required: true })}
                                                 />
+                                                {errors.password && <span className="text-orange-600">Please fill out this field</span>}
                                                 <label
                                                     htmlFor="password"
                                                     className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
@@ -187,6 +208,7 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
+            <Toaster />
         </section>
     );
 };
