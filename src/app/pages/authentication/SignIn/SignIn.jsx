@@ -1,12 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import useAuthProvider from "../../../components/hooks/useAuthProvider";
-import axios from "axios";
-import { updateProfile } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
-    
+
 const SignIn = () => {
-    const {signInUser} = useAuthProvider();
+    const { signInUser, googleSignIn } = useAuthProvider();
     const navigate = useNavigate();
 
     // Hook form elements
@@ -17,7 +15,7 @@ const SignIn = () => {
     } = useForm();
 
     //   
-    const onSubmit = async(data) => {
+    const onSubmit = async (data) => {
         console.log(data);
 
         // Sign In the user
@@ -33,8 +31,22 @@ const SignIn = () => {
             });
     };
 
+    // Google sign in
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await googleSignIn();
+            console.log(result);
+            toast.success('Sign up successful');
+            navigate('/');
+        }
+        catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        }
+    };
+
     return (
-        <section className="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
+        <section className="gradient-form h-screen bg-neutral-200 dark:bg-neutral-700">
             <div className="container max-w-5xl mx-auto h-full p-10">
                 <div
                     className="flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
@@ -108,7 +120,16 @@ const SignIn = () => {
                                                 />
 
                                                 {/*Forgot password link */}
-                                                <a href="#!">Terms and conditions</a>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleGoogleSignIn}
+                                                    className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-dark-3 transition duration-150 ease-in-out hover:shadow-dark-2 focus:shadow-dark-2 focus:outline-none focus:ring-0 active:shadow-dark-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                                    data-twe-ripple-init
+                                                    data-twe-ripple-color="light"
+                                                    style={{
+                                                        border: '2px solid #dd3675'
+                                                    }}
+                                                ><span></span><span>Sign with google</span></button>
                                             </div>
 
                                             {/*Register button */}

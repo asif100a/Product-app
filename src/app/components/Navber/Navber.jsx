@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import useAuthProvider from "../hooks/useAuthProvider";
+import "./navber.css";
 
 const Navber = () => {
     // Nav link array
@@ -24,12 +25,12 @@ const Navber = () => {
 
     return (
         // Header component
-        <nav className=" bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
+        <nav className=" bg-white w-full shadow-md flex relative justify-between items-center mx-auto px-8 h-20">
             {/* logo */}
             <div className="inline-flex">
                 <Link className="_o6689fn" to="/">
                     <div className="hidden md:block">
-                        <h3>Supreme Car Store</h3>
+                        <h3 className="text-2xl font-semibold text-gradient-color">Supreme Car Store</h3>
                     </div>
                 </Link>
             </div>

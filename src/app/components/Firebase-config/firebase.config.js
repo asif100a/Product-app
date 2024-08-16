@@ -6,12 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAQ5ZDwhFP0gFI2vEq9cJ82Mn5nvttZ3Ok",
-  authDomain: "supreme-car-sore.firebaseapp.com",
-  projectId: "supreme-car-sore",
-  storageBucket: "supreme-car-sore.appspot.com",
-  messagingSenderId: "173323967104",
-  appId: "1:173323967104:web:eb3fcdbbb4f1a09156e465"
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APPID,
 };
 
 // Initialize Firebase

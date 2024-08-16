@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import auth from '../Firebase-config/firebase.config';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
     const [isPending, setIsPending] = useState(true);
 
     // Providers
-    // const google_providers = ;
+    const google_providers = new GoogleAuthProvider();
 
     // Sign Up with email and password
     const signUpUser = (email, password) => {
@@ -23,6 +23,12 @@ const AuthProvider = ({ children }) => {
     const signInUser = (email, password) => {
         setIsPending(true);
         return signInWithEmailAndPassword(auth, email, password);
+    };
+
+    // Sign In with Google
+    const googleSignIn = () => {
+        setIsPending(true);
+        return signInWithPopup(auth, google_providers);
     };
 
     // Sign out the user
@@ -37,15 +43,22 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             setIsPending(false);
             console.log(currentUser);
-            const loggedUser = currentUser?.email || user?.email;
+            const loggedUser = currentUser?.email;
 
-            if (currentUser || user) {
+            if (currentUser) {
                 // Implement jwt verification
-                const jwtFunction = async () => {
-                    const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URL}/jwt`, { user: loggedUser });
+                const setToken = async () => {
+                    const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URL}/jwt`, { user: loggedUser }, {withCredentials: true});
                     console.log(data);
                 };
-                jwtFunction();
+                setToken();
+            }
+            else{
+                const clearToken = async() => {
+                    const {data} = await axios.post(`${import.meta.env.VITE_SERVER_URL}/signOut`, {clearToken: true}, {withCredentials: true});
+                    console.log(data);
+                };
+                clearToken();
             }
         });
 
@@ -58,6 +71,7 @@ const AuthProvider = ({ children }) => {
         signUpUser,
         signInUser,
         signOutUser,
+        googleSignIn,
         user,
         isPending,
     };
