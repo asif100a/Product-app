@@ -4,11 +4,12 @@ import Card from "../Card/Card.jsx";
 import { DotLoader } from "react-spinners";
 import PropTypes from 'prop-types';
 import SearchBox from "../SearchBox/SearchBox.jsx";
+import FilterAndSort from "../FilterAndSort/FilterAndSort.jsx";
 
-const Cards = ({ inputValue, handleSearch }) => {
+const Cards = ({ inputValue, handleSearch, handlePriceSorting, priceSorting }) => {
     const [products, setProducts] = useState([]);
     const [productCount, setProductCount] = useState(0);
-    let [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     // console.log(inputValue);
@@ -25,12 +26,12 @@ const Cards = ({ inputValue, handleSearch }) => {
     useEffect(() => {
         // Fetch the products data from the database
         const fetchProduct = async () => {
-            const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/products?page=${currentPage}&size=${productsPerPage}&search=${inputValue}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/products?page=${currentPage}&size=${productsPerPage}&search=${inputValue}&priceSort=${priceSorting}`);
             setProducts(data);
             setIsLoading(false);
         };
         fetchProduct();
-    }, [currentPage, productsPerPage, inputValue]);
+    }, [currentPage, productsPerPage, inputValue, priceSorting]);
 
     useEffect(() => {
         // Fetch the count of products
@@ -59,6 +60,16 @@ const Cards = ({ inputValue, handleSearch }) => {
 
     return (
         <div>
+            {/* Search box for Small Devices */}
+            <div className="flex sm:hidden mt-6 justify-center items-center">
+                <SearchBox handleSearch={handleSearch} />
+            </div>
+
+            {/* Filter and Sort */}
+            <div className="my-12 container max-w-7xl xl:w-[1200px] xl:mx-auto mx-3">
+                <FilterAndSort handlePriceSorting={handlePriceSorting} />
+            </div>
+
             {
                 isLoading && (
                     <div className="w-full h-screen flex justify-center items-center">
@@ -66,11 +77,6 @@ const Cards = ({ inputValue, handleSearch }) => {
                     </div>
                 )
             }
-
-            {/* Search box for Small Devices */}
-            <div className="flex sm:hidden mt-6 justify-center items-center">
-                <SearchBox handleSearch={handleSearch} />
-            </div>
 
             <div className="container max-w-7xl w-fit xl:mx-auto mx-3 my-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
@@ -99,7 +105,7 @@ const Cards = ({ inputValue, handleSearch }) => {
                             <button
                                 onClick={() => setCurrentPage(page)}
                                 key={page}
-                                className={`px-2 py-1 text-sm rounded-md dark:bg-gray-800 bg-white border-2 border-[#dd3675] ${currentPage === page && 'bg-[#dd3675] text-white'}`}>{page + 1}</button>
+                                className={`px-2 py-1 text-sm rounded-md border-2 border-[#dd3675] ${currentPage === page && 'bg-[#dd3675] text-white'}`}>{page + 1}</button>
                         ))
                     }
                 </div>
@@ -120,7 +126,9 @@ const Cards = ({ inputValue, handleSearch }) => {
 
 Cards.propTypes = {
     inputValue: PropTypes.string,
-    handleSearch: PropTypes.func
+    handleSearch: PropTypes.func,
+    handlePriceSorting: PropTypes.func,
+    priceSorting: PropTypes.string,
 };
 
 export default Cards;
