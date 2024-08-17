@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import useAuthProvider from "../hooks/useAuthProvider";
+import PropTypes from 'prop-types';
 import "./navber.css";
+import SearchBox from "../UI-parts/SearchBox/SearchBox";
 
-const Navber = () => {
+const Navber = ({handleSearch}) => {
     // Nav link array
     const navlink = [
         {
@@ -25,11 +27,11 @@ const Navber = () => {
 
     return (
         // Header component
-        <nav className=" bg-white w-full shadow-md flex relative justify-between items-center mx-auto px-8 h-20">
+        <nav className=" bg-white w-full shadow-md flex relative justify-between items-center mx-auto lg:px-8 px-3 h-20">
             {/* logo */}
             <div className="inline-flex">
                 <Link className="_o6689fn" to="/">
-                    <div className="hidden md:block">
+                    <div className="block">
                         <h3 className="text-2xl font-semibold text-gradient-color">Supreme Car Store</h3>
                     </div>
                 </Link>
@@ -42,37 +44,8 @@ const Navber = () => {
                 <div className="inline-block">
                     <div className="inline-flex items-center max-w-full">
                         {/* <input  type="text" /> */}
-                        <button className="flex items-center flex-grow-0 flex-shrink pl-2 relative w-60 border rounded-full px-3 py-1 hover:cursor-default" type="button">
-                            <input
-                                type="text"
-                                placeholder="Start your search"
-                                className="block flex-grow flex-shrink overflow-hidden focus:outline-none ml-3"
-                            />
-                            <div className="flex items-center justify-center relative hover:cursor-pointer h-8 w-8 rounded-full">
-                                <svg
-                                    viewBox="0 0 32 32"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true"
-                                    role="presentation"
-                                    focusable="false"
-                                    style={{
-                                        display: 'block',
-                                        fill: 'none',
-                                        height: '12px',
-                                        width: '12px',
-                                        stroke: 'currentcolor',
-                                        strokeWidth: '5.33333',
-                                        overflow: 'visible'
-                                    }}
-                                >
-                                    <g fill="none">
-                                        <path
-                                            d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9"
-                                        ></path>
-                                    </g>
-                                </svg>
-                            </div>
-                        </button>
+                        {/* Search Box */}
+                        <SearchBox handleSearch={handleSearch} />
                     </div>
                 </div>
             </div >
@@ -133,6 +106,10 @@ const Navber = () => {
             {/* end login */}
         </nav >
     );
+};
+
+Navber.propTypes = {
+    handleSearch: PropTypes.func
 };
 
 export default Navber;

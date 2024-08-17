@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import useAuthProvider from "../../../components/hooks/useAuthProvider";
 import toast, { Toaster } from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 
 const SignIn = () => {
     const { signInUser, googleSignIn } = useAuthProvider();
@@ -123,13 +124,13 @@ const SignIn = () => {
                                                 <button
                                                     type="button"
                                                     onClick={handleGoogleSignIn}
-                                                    className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-dark-3 transition duration-150 ease-in-out hover:shadow-dark-2 focus:shadow-dark-2 focus:outline-none focus:ring-0 active:shadow-dark-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                                    className="mb-3 flex justify-center items-center gap-6 w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-dark-3 transition duration-150 ease-in-out hover:shadow-dark-2 focus:shadow-dark-2 focus:outline-none focus:ring-0 active:shadow-dark-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                                                     data-twe-ripple-init
                                                     data-twe-ripple-color="light"
                                                     style={{
                                                         border: '2px solid #dd3675'
                                                     }}
-                                                ><span></span><span>Sign with google</span></button>
+                                                ><span><FcGoogle className="text-xl" /></span><span>Sign with google</span></button>
                                             </div>
 
                                             {/*Register button */}

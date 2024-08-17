@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../Card/Card.jsx";
 import { DotLoader } from "react-spinners";
+import PropTypes from 'prop-types';
+import SearchBox from "../SearchBox/SearchBox.jsx";
 
-const Cards = () => {
+const Cards = ({ inputValue, handleSearch }) => {
     const [products, setProducts] = useState([]);
     const [productCount, setProductCount] = useState(0);
     let [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
+    // console.log(inputValue);
+    // console.log(products.length)
+    // const productCount = products.length;
     // Define the count of product per page
     const productsPerPage = 9;
     // Get the number of pages
@@ -20,16 +25,16 @@ const Cards = () => {
     useEffect(() => {
         // Fetch the products data from the database
         const fetchProduct = async () => {
-            const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/products?page=${currentPage}&size=${productsPerPage}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/products?page=${currentPage}&size=${productsPerPage}&search=${inputValue}`);
             setProducts(data);
             setIsLoading(false);
         };
         fetchProduct();
-    }, [currentPage, productsPerPage]);
+    }, [currentPage, productsPerPage, inputValue]);
 
     useEffect(() => {
-         // Fetch the count of products
-         const fetchCount = async () => {
+        // Fetch the count of products
+        const fetchCount = async () => {
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/count`);
             const { count } = await res.json();
             // console.log(count);
@@ -41,13 +46,13 @@ const Cards = () => {
     console.log(products);
 
     const handlePrevPage = () => {
-        if(currentPage !== 0) {
+        if (currentPage !== 0) {
             setCurrentPage(currentPage - 1)
         }
     };
 
     const handleNextPage = () => {
-        if(currentPage < pages.length - 1) {
+        if (currentPage < pages.length - 1) {
             setCurrentPage(currentPage + 1);
         }
     };
@@ -61,7 +66,13 @@ const Cards = () => {
                     </div>
                 )
             }
-            <div className="container max-w-7xl w-fit mx-auto my-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {/* Search box for Small Devices */}
+            <div className="flex sm:hidden mt-6 justify-center items-center">
+                <SearchBox handleSearch={handleSearch} />
+            </div>
+
+            <div className="container max-w-7xl w-fit xl:mx-auto mx-3 my-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     products?.map(product => (
                         <Card key={product._id} product={product} />
@@ -70,7 +81,7 @@ const Cards = () => {
             </div>
 
             {/* Pagination */}
-            <div className="max-w-7xl w-[1200px] mx-auto flex items-center justify-between mt-0 mb-12">
+            <div className="max-w-7xl xl:w-[1200px] xl:mx-auto mx-3 flex items-center justify-between mt-0 mb-12">
                 {/* Previous button */}
                 <button onClick={handlePrevPage} className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border-2 border-[#dd3675] rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:-scale-x-100">
@@ -105,6 +116,11 @@ const Cards = () => {
             </div>
         </div>
     );
+};
+
+Cards.propTypes = {
+    inputValue: PropTypes.string,
+    handleSearch: PropTypes.func
 };
 
 export default Cards;
