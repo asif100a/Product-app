@@ -50,6 +50,15 @@ const FilterAndSort = ({ handlePriceSorting }) => {
                     </label>
                 </div>
             </div>
+
+            <div>
+                <div className="form-control">
+                    <label className="cursor-pointer label">
+                        <span className="label-text">Category Name</span>
+                        <input type="checkbox" defaultChecked className="checkbox checkbox-secondary" />
+                    </label>
+                </div>
+            </div>
         </div>
     );
 };
