@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const FilterAndSort = ({handlePriceSorting}) => {
     return (
-        <div className="flex justify-between xl:max-w-7 xl:w-[1200px] xl:mx-auto mx-3">
+        <div className="flex justify-between">
             <div className="space-x-6">
                 {/* Price Sort Button */}
                 <div className="dropdown dropdown-bottom">
