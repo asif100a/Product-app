@@ -36,11 +36,11 @@ const FilterAndSort = ({
     };
 
     return (
-        <div className="flex justify-between">
-            <div className="space-x-6">
+        <div className="flex lg:flex-row flex-col lg:justify-between gap-3 w-full overflow-hidden">
+            <div className="flex justify-between lg:gap-6">
                 {/* Price Sort Button */}
                 <div className="dropdown dropdown-bottom">
-                    <button onClick={''} className="relative inline-flex items-center justify-start px-6 py-2 overflow-hidden font-medium transition-all bg-red-500 rounded-lg group">
+                    <button onClick={''} className="relative inline-flex items-center justify-start px-6 py-1 overflow-hidden font-medium transition-all bg-red-500 rounded-lg group">
                         <span className="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-red-700 rounded group-hover:-mr-4 group-hover:-mt-4">
                             <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
                         </span>
@@ -58,7 +58,7 @@ const FilterAndSort = ({
 
                 {/* Date Sort Button */}
                 <div className="dropdown dropdown-bottom">
-                    <button onClick={''} className="relative inline-flex items-center justify-start px-6 py-2 overflow-hidden font-medium transition-all bg-red-500 rounded-lg group">
+                    <button onClick={''} className="relative inline-flex items-center justify-start px-6 py-1 overflow-hidden font-medium transition-all bg-red-500 rounded-lg group">
                         <span className="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-red-700 rounded group-hover:-mr-4 group-hover:-mt-4">
                             <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
                         </span>
@@ -76,9 +76,9 @@ const FilterAndSort = ({
             </div>
 
             {/* Dropdown menu */}
-            <div className='flex gap-6'>
+            <div className='flex gap-3 md:gap-6 overflow-x-auto'>
                 {/* Brand Name */}
-                <select onChange={handleBrand} defaultValue={'brand'} className="select select-secondary w-fit">
+                <select onChange={handleBrand} defaultValue={'brand'} className="select select-secondary focus:outline-none h-8 min-h-8 w-fit">
                     <option disabled value={'brand'}>Brand Name</option>
                     <option value={"Tesla"}>Tesla</option>
                     <option value={"Ford"}>Ford</option>
@@ -95,7 +95,7 @@ const FilterAndSort = ({
                 </select>
 
                 {/* Category Name */}
-                <select onChange={handleCategory} defaultValue={'category'} className="select select-secondary w-fit">
+                <select onChange={handleCategory} defaultValue={'category'} className="select select-secondary focus:outline-none h-8 min-h-8 w-fit">
                     <option disabled value={'category'}>Category Name</option>
                     <option value={"Sedan"}>Sedan</option>
                     <option value={"Pickup"}>Pickup</option>
@@ -108,7 +108,7 @@ const FilterAndSort = ({
                 </select>
 
                 {/* Price Range */}
-                <select onChange={handlePriceRange} defaultValue={'price'} className="select select-secondary w-fit">
+                <select onChange={handlePriceRange} defaultValue={'price'} className="select select-secondary focus:outline-none h-8 min-h-8 w-fit">
                     <option disabled value={'price'}>Price Range</option>
                     <option value={"20000-50000"}>$20,000-$50,000</option>
                     <option value={"50000-70000"}>$50,000-$70,000</option>

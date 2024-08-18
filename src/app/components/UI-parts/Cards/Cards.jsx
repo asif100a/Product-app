@@ -79,14 +79,14 @@ const Cards = ({
     };
 
     return (
-        <div>
+        <div className="container max-w-7xl xl:w-[1200px] xl:mx-auto xl:px-0 px-3">
             {/* Search box for Small Devices */}
-            <div className="flex sm:hidden mt-6 justify-center items-center">
+            <div className="flex sm:hidden md:mt-6 mt-3 justify-center items-center">
                 <SearchBox handleSearch={handleSearch} />
             </div>
 
             {/* Filter and Sort */}
-            <div className="my-12 container max-w-7xl xl:w-[1200px] xl:mx-auto mx-3">
+            <div className="md:my-6 my-3">
                 <FilterAndSort
                     handlePriceSorting={handlePriceSorting}
                     handleTimeSorting={handleTimeSorting}
@@ -98,13 +98,13 @@ const Cards = ({
 
             {
                 isLoading && (
-                    <div className="w-full h-screen flex justify-center items-center">
+                    <div className="w-full h-full flex justify-center items-center">
                         <DotLoader color="#d8363a" />
                     </div>
                 )
             }
 
-            <div className="container max-w-7xl w-fit xl:mx-auto mx-3 my-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="container w-fit my-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     products?.map(product => (
                         <Card key={product._id} product={product} />
@@ -113,7 +113,7 @@ const Cards = ({
             </div>
 
             {/* Pagination */}
-            <div className="max-w-7xl xl:w-[1200px] xl:mx-auto mx-3 flex items-center justify-between mt-0 mb-12">
+            <div className="flex items-center justify-between mt-0 mb-12">
                 {/* Previous button */}
                 <button onClick={handlePrevPage} className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border-2 border-[#dd3675] rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:-scale-x-100">
