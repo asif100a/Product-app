@@ -6,15 +6,25 @@ import PropTypes from 'prop-types';
 import SearchBox from "../SearchBox/SearchBox.jsx";
 import FilterAndSort from "../FilterAndSort/FilterAndSort.jsx";
 
-const Cards = ({ inputValue, handleSearch, handlePriceSorting, priceSorting }) => {
+const Cards = ({
+    inputValue,
+    handleSearch,
+    handlePriceSorting,
+    priceSorting,
+    handleTimeSorting,
+    timeSorting,
+    handleBrandFiltering,
+    brandFiltering,
+    handleCategoryFiltering,
+    categoryFiltering,
+    handlePriceFiltering,
+    priceFiltering
+}) => {
     const [products, setProducts] = useState([]);
     const [productCount, setProductCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    // console.log(inputValue);
-    // console.log(products.length)
-    // const productCount = products.length;
     // Define the count of product per page
     const productsPerPage = 9;
     // Get the number of pages
@@ -26,12 +36,22 @@ const Cards = ({ inputValue, handleSearch, handlePriceSorting, priceSorting }) =
     useEffect(() => {
         // Fetch the products data from the database
         const fetchProduct = async () => {
-            const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/products?page=${currentPage}&size=${productsPerPage}&search=${inputValue}&priceSort=${priceSorting}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/products?page=${currentPage}&size=${productsPerPage}&search=${inputValue}&priceSort=${priceSorting}&timeSort=${timeSorting}&brandFilter=${brandFiltering}&categoryFilter=${categoryFiltering}&priceFilter=${priceFiltering}`);
             setProducts(data);
             setIsLoading(false);
         };
         fetchProduct();
-    }, [currentPage, productsPerPage, inputValue, priceSorting]);
+    }, [
+        currentPage,
+        productsPerPage,
+        inputValue,
+        priceSorting,
+        timeSorting,
+        brandFiltering,
+        categoryFiltering,
+        priceFiltering
+    ]);
+    console.log(inputValue)
 
     useEffect(() => {
         // Fetch the count of products
@@ -67,7 +87,13 @@ const Cards = ({ inputValue, handleSearch, handlePriceSorting, priceSorting }) =
 
             {/* Filter and Sort */}
             <div className="my-12 container max-w-7xl xl:w-[1200px] xl:mx-auto mx-3">
-                <FilterAndSort handlePriceSorting={handlePriceSorting} />
+                <FilterAndSort
+                    handlePriceSorting={handlePriceSorting}
+                    handleTimeSorting={handleTimeSorting}
+                    handleBrandFiltering={handleBrandFiltering}
+                    handleCategoryFiltering={handleCategoryFiltering}
+                    handlePriceFiltering={handlePriceFiltering}
+                />
             </div>
 
             {
@@ -129,6 +155,14 @@ Cards.propTypes = {
     handleSearch: PropTypes.func,
     handlePriceSorting: PropTypes.func,
     priceSorting: PropTypes.string,
+    handleTimeSorting: PropTypes.func,
+    timeSorting: PropTypes.string,
+    handleBrandFiltering: PropTypes.func,
+    brandFiltering: PropTypes.string,
+    handleCategoryFiltering: PropTypes.func,
+    categoryFiltering: PropTypes.string,
+    handlePriceFiltering: PropTypes.func,
+    priceFiltering: PropTypes.string,
 };
 
 export default Cards;
